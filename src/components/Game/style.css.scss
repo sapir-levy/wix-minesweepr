@@ -4,23 +4,3 @@
   align-items: center;
 }
 
-.row {
-  display: flex;
-  
-  .cell {
-    border: 1px solid;
-    padding: 10px;
-
-    &.unknown, &.flagged {
-      .cell-value {
-        visibility: hidden;
-      }
-    }
-
-    &.flagged {
-      &::after {
-        content: '⚑'
-      }
-    }
-  }
-}

@@ -54,20 +54,22 @@ const Setup = (props) => {
   const handleCustomSetup = () => setShowCustomSetupDialog(true)
   const handleCloseCustomSetup = () => setShowCustomSetupDialog(false)
 
-  const handleClick = (type) => {
-    return type == SETUP_TYPES.skill ? props.onApplySetup : handleCustomSetup
-  }
+  const handleApplySetup = (params) => props.onApplySetup(params)
 
   return (
     <div className="setup-wrapper">
       { !showCustomSetupDialog && (
           <List 
             listItems={SETUP_CONFIG}
-            renderItem={(skill) => (
-              <SkillButton 
-                skill={skill}
-                onClick={handleClick(skill.type)} />
-            )} />
+            renderItem={(skill) => {
+              const handleClick = skill.type == SETUP_TYPES.skill ? handleApplySetup : handleCustomSetup
+              
+              return (
+                <SkillButton 
+                  skill={skill}
+                  onClick={() => handleClick(skill.params)} />
+              )
+            }} />
       )}
       { showCustomSetupDialog && (
           <CustomSetup 

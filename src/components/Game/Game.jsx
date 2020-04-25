@@ -1,39 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GameBoard from './Board/BoardContainer'
 import GameSetup from './Setup/Setup'
+import WinBanner from './Banners/Win'
+import LoseBanner from './Banners/Lose'
 
 import './style.css.scss'
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props)
+const GAME_STATUS = {
+  setup: "setup",
+  started: "started",
+  lost: "lost",
+  won: "won"
+}
 
-    this.state = {
-      width: 10,
-      height: 10,
-      mines: 10
-    }
+
+const Game = (props) => {
+  const [config, setConfig] = useState({})
+  const [gameStatus, setGameStatus] = useState(GAME_STATUS.setup)
+
+  const applySetup = ({width, height, mines}) => {
+    setConfig({width, height, mines})
+    setGameStatus(GAME_STATUS.started)
   }
 
-  handleWidthChange = (value) => this.setState({width: value})
-  handleHeightChange = (value) => this.setState({height: value})
-  handleMinesChange = (value) => this.setState({mines: value})
+  const handleWin = () => setGameStatus(GAME_STATUS.won)
+  const handleLose = () => setGameStatus(GAME_STATUS.lost)
 
-  applySetup = ({width, height, mines}) => {
-    this.setState({width, height, mines})
-  }
-
-  render() {
-    return (
-      <div className="minesweeper-game">
-        <GameSetup onApplySetup={this.applySetup} />
-        <GameBoard 
-          width={this.state.width}
-          height={this.state.height}
-          minesCount={this.state.mines} />
-      </div>
-    )
-  }
+  return (
+    <div className="minesweeper-game">
+      { gameStatus === GAME_STATUS.setup && (
+          <GameSetup onApplySetup={applySetup} />
+      )}
+      { gameStatus === GAME_STATUS.started && (
+          <GameBoard 
+            width={config.width}
+            height={config.height}
+            minesCount={config.mines}
+            onWin={handleWin}
+            onLose={handleLose} />
+      )}
+      { gameStatus === GAME_STATUS.won && <WinBanner /> }
+      { gameStatus === GAME_STATUS.lost && <LoseBanner /> }
+    </div>
+  )
 }
 
 export default Game
