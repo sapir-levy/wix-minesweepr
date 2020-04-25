@@ -1,0 +1,20 @@
+.button {
+  border: none;
+  
+  &.easy-skill-btn {
+    background-color: #c3d302;
+    color: #5c7803;
+  }
+  &.normal-skill-btn {
+    background-color: #fdc301;
+    color: #8a6d0a;
+  }
+  &.hard-skill-btn {
+    background-color: #ee7a47;
+    color: #a04c26;
+  }
+  &.custom-skill-btn {
+    background-color: #916d5d;
+    color: #fff;
+  }
+}

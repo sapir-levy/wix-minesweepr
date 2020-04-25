@@ -1,0 +1,49 @@
+
+.silder-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 500px;
+
+  .slider-title {
+    padding-left: 32px;
+    margin-bottom: 24px;
+
+    label {
+      color: #b8ae7e;
+      font-weight: 700;
+      margin-right: 36px;
+    }
+
+    .value {
+      display: inline-block;
+      width: 60px;
+      background-color: #ece5bf;
+      color: #9b865e;
+      text-align: center;
+      padding: 8px 16px;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+  }
+
+  .silder-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+
+    .minesweeper-slider {
+      height: 18px;
+      // width: 90%;
+      margin: 0 20px;
+    }
+
+    label {
+      flex-shrink: 0;
+      color: #b8ae7e;
+      font-size: 20px;
+    }
+  }
+}

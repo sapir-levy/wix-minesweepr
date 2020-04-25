@@ -1,58 +1,72 @@
 import React, { useState } from 'react'
+import List from '../../UI/List/List'
+import SkillButton from './SkillButton/SkillButton'
+import CustomSetup from './CustomSetup/CustomSetup'
+
+const SETUP_TYPES = {
+  skill: "skill",
+  custom: "custom"
+}
 
 const SETUP_CONFIG = [
   {
     label: "Easy",
-    width: 10,
-    height: 10,
-    mines: 10
+    className: 'easy-skill-btn',
+    params: {
+      width: 10,
+      height: 10,
+      mines: 10
+    },
+    type: SETUP_TYPES.skill
   },
   {
     label: "Normal",
-    width: 30,
-    height: 30,
-    mines: 30
+    className: 'normal-skill-btn',
+     params: {
+      width: 30,
+      height: 30,
+      mines: 30
+    },
+    type: SETUP_TYPES.skill
   },
   {
     label: "Hard",
-    width: 50,
-    height: 50,
-    mines: 50
+    className: 'hard-skill-btn',
+     params: {
+      width: 50,
+      height: 50,
+      mines: 50
+    },
+    type: SETUP_TYPES.skill
+  },
+  {
+    label: "Custom",
+    className: 'custom-skill-btn',
+    type: SETUP_TYPES.custom
   }
 ]
 
 const Setup = (props) => {
-  const [width, setWidth] = useState(0)
-  const [height, setHeight] = useState(0)
-  const [mines, setMines] = useState(0)
+  const [showCustomSetupDialog, setShowCustomSetupDialog] = useState(false)
+  
+  const handleCustomSetup = () => setShowCustomSetupDialog(true)
 
-  const handleChange = (handler) => (e) => handler(e.target.value)
-  const handleApplySetup = () => {
-    props.onApplySetup({width, height, mines})
+  const handleClick = (type) => {
+    return type == SETUP_TYPES.skill ? props.onApplySetup : handleCustomSetup
   }
 
   return (
     <div>
-      {
-        SETUP_CONFIG.map((setup, index) => {
-          const handleSetupClick = () => {
-            setWidth(setup.width)
-            setHeight(setup.height)
-            setMines(setup.mines)
-
-          }
-
-          return <div key={index} onClick={handleSetupClick}>{setup.label}</div>
-
-        }) 
-      }
-      <label>Width</label>
-      <input onChange={handleChange(setWidth)} value={width} />      
-      <label>Height</label>
-      <input onChange={handleChange(setHeight)} value={height} />      
-      <label>Mines</label>
-      <input onChange={handleChange(setMines)} value={mines} />
-      <div onClick={handleApplySetup}>Start</div>
+      <List 
+        listItems={SETUP_CONFIG}
+        renderItem={(skill) => (
+          <SkillButton 
+            skill={skill}
+            onClick={handleClick(skill.type)} />
+        )} />
+      { true && (
+          <CustomSetup onApply={props.onApplySetup} />
+      )}
     </div>
   )
 }
