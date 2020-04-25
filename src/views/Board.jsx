@@ -37,6 +37,16 @@ const Board = ({width, height, minesCount}) => {
     setMineField()
   }, [mines])
 
+  useEffect(() => {
+    if(checkVictory()) {
+      alert("you win!")
+    }
+  }, [minesLeft, flagsLeft, cellsLeft])
+
+  const checkVictory = () => {
+    return minesLeft == 0 && cellsLeft == 0
+  }
+
   const generateMines = () => {
     const m = {}
 
@@ -134,12 +144,13 @@ const Board = ({width, height, minesCount}) => {
 
   const revealNeighbors = (f, cellX, cellY) => {
     const neighbors = getNeighbors(f, cellX, cellY)
-    let hasMine = false
+    let hasMine = false, revealed = 0
+
     for(let i = 0; i < neighbors.length; i++) {
       const [nx, ny] = neighbors[i]
       const neighbor = f[nx][ny]
 
-      if(neighbor.value == MINE || neighbor.status == CellStatus.Flagged) {
+      if(neighbor.value == MINE && neighbor.status != CellStatus.Flagged) {
         hasMine = true
         break
       }
@@ -151,31 +162,38 @@ const Board = ({width, height, minesCount}) => {
         const neighbor = f[nx][ny]
 
         if(neighbor.status != CellStatus.Revealed) {
-          revealCell(f, nx, ny)
+          revealed += revealCell(f, nx, ny)
         }
       }
     }
+
+    return revealed
   }
 
   const revealCell = (f, cellX, cellY) => {
     const cell = f[cellX][cellY]
+    let revealed = 0
     if(cell.status == CellStatus.Revealed || cell.status == CellStatus.Flagged) {
-      return
+      return revealed
     }
     else if(cell.value == MINE) {
-      console.log("YOU LOSE!")
+      alert("you are a loser!")
     }
-    //else if win
     else {
       f[cellX][cellY].status = CellStatus.Revealed
-      revealNeighbors(f, cellX, cellY)
+      revealed++
+      revealed += revealNeighbors(f, cellX, cellY)
     }
+
+    return revealed
   }
 
   const handleReveal = (cellX, cellY) => {
     const f = cloneDeep(field)
-    revealCell(f, cellX, cellY)
+    const revealed = revealCell(f, cellX, cellY)
+
     setField(f)
+    setCellsLeft(cellsLeft - revealed)
   }
 
   return (
