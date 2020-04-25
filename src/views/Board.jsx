@@ -31,7 +31,7 @@ const Board = ({width, height, minesCount}) => {
 
   useEffect(() => {
     generateMines()
-  }, [])
+  }, [width, height, minesCount])
 
   useEffect(() => {
     setMineField()
