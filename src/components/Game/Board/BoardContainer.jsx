@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import Board from './Board'
 import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
 
 const NEIGHBORS = Object.freeze([
   [-1, -1], [0, -1], [1, -1],
@@ -70,7 +71,11 @@ const BoardContainer = ({width, height, minesCount}) => {
       f[i] = []
 
       for(let j = 0; j < height; j++) {
-        f[i][j] = {...CELL}
+        f[i][j] = {
+          ...CELL,
+          neighbors: getNeighbors(i, j),
+          canRevealNeighbors: true
+        }
       }
     }
 
@@ -81,14 +86,17 @@ const BoardContainer = ({width, height, minesCount}) => {
     const f = initField()
 
     Object.values(mines).forEach(([mineX, mineY]) => { 
-      f[mineX][mineY].value = MINE
+      const cell = f[mineX][mineY]
+      cell.value = MINE
 
-      const neighbors = getNeighbors(f, mineX, mineY)
+      for(let i = 0; i < cell.neighbors.length; i++) {
+        const [nx, ny] = cell.neighbors[i]
+        const neighbor = f[nx][ny]
 
-      for(let i = 0; i < neighbors.length; i++) {
-        const [nx, ny] = neighbors[i]
-        if(f[nx][ny].value !== MINE) {
-          f[nx][ny].value++
+        neighbor.canRevealNeighbors = false
+
+        if(neighbor.value !== MINE) {
+          neighbor.value++
         }
       }
     })
@@ -96,13 +104,13 @@ const BoardContainer = ({width, height, minesCount}) => {
     setField(f)
   }
 
-  const getNeighbors = (f, i, j) => {
+  const getNeighbors = (cellX, cellY) => {
     const n = NEIGHBORS.reduce((neighbors, [x, y]) => {
-      const ni = i + x
-      const nj = j + y
+      const neighborX = cellX + x
+      const neighborY = cellY + y
 
-      if(ni > -1 && ni < width && nj > -1 && nj < height) {
-        neighbors.push([ni, nj])
+      if(neighborX > -1 && neighborX < width && neighborY > -1 && neighborY < height) {
+        neighbors.push([neighborX, neighborY])
       }
 
       return neighbors
@@ -140,27 +148,25 @@ const BoardContainer = ({width, height, minesCount}) => {
     setField(f)
   }
 
-  const revealNeighbors = (f, cellX, cellY) => {
-    const neighbors = getNeighbors(f, cellX, cellY)
-    let hasMine = false, revealed = 0
+  const revealNeighbors = (f, cell) => {
+    let revealed = 0
 
-    for(let i = 0; i < neighbors.length; i++) {
-      const [nx, ny] = neighbors[i]
-      const neighbor = f[nx][ny]
-
-      if(neighbor.value === MINE && neighbor.status !== CellStatus.Flagged) {
-        hasMine = true
-        break
-      }
+    if(!cell.canRevealNeighbors) {
+      return revealed
     }
 
-    if(!hasMine) {
-      for(let i = 0; i < neighbors.length; i++) {
-        const [nx, ny] = neighbors[i]
-        const neighbor = f[nx][ny]
+    let neighborsToReveal = [...cell.neighbors]
 
-        if(neighbor.status !== CellStatus.Revealed) {
-          revealed += revealCell(f, nx, ny)
+    while(!isEmpty(neighborsToReveal)) {
+      let [nx, ny] = neighborsToReveal.shift()
+      let neighbor = f[nx][ny]
+
+      if(neighbor.status !== CellStatus.Revealed) {
+        f[nx][ny].status = CellStatus.Revealed
+        revealed++
+
+        if(neighbor.canRevealNeighbors) {
+          neighborsToReveal = neighborsToReveal.concat(neighbor.neighbors)
         }
       }
     }
@@ -180,7 +186,7 @@ const BoardContainer = ({width, height, minesCount}) => {
     else {
       f[cellX][cellY].status = CellStatus.Revealed
       revealed++
-      revealed += revealNeighbors(f, cellX, cellY)
+      revealed += revealNeighbors(f, cell)
     }
 
     return revealed
