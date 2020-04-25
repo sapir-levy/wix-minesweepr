@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const FlagsIndicator = ({flagsLeft}) => {
   return (
-    <h2>Flags Left: {flagsLeft}</h2>
+    <h2 className="flags-indicator">Flags Left: {flagsLeft}</h2>
   )
 }
 

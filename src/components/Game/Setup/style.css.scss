@@ -1,0 +1,17 @@
+.setup-wrapper {
+  ul {
+    padding: 0;
+    
+    > li:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+
+  .custom-setup {
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+  }
+}

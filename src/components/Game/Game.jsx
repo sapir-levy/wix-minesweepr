@@ -25,7 +25,7 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="minesweeper-game">
         <GameSetup onApplySetup={this.applySetup} />
         <GameBoard 
           width={this.state.width}

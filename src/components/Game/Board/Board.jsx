@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import BoardCells from './Cells/Cells'
 import FlagsIndicator from './FlagsIndicator/FlagsIndicator'
 
+import './style.css.scss'
+
 const Board = (props) => {
   return (
     <div className="board">
-      <FlagsIndicator flagsLeft={props.flagsLeft} />
       <BoardCells 
         cells={props.mineField}
         onFlag={props.onFlag}

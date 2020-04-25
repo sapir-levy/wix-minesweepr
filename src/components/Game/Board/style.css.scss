@@ -1,0 +1,14 @@
+.board {
+  display: flex;
+  width: 100vw;
+  padding: 0 48px;
+
+  .flags-indicator {
+    flex-basis: 100%;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+}

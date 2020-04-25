@@ -21,7 +21,7 @@ List.propTypes = {
     PropTypes.object, 
     PropTypes.array
   ]).isRequired,
-  render: PropTypes.func.isRequired
+  renderItem: PropTypes.func.isRequired
 }
 
 export default List

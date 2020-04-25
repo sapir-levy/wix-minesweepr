@@ -3,7 +3,18 @@ import PropTypes from 'prop-types'
 
 import './style.css.scss'
 
-const Button = ({className, onClick, children}) => {
+export const BUTTON_TYPES = {
+  primary: "primary",
+  secondary: "secondary",
+}
+
+export const BUTTON_SIZES = {
+  small: "small",
+  medium: "medium",
+  large: "large",
+}
+
+const Button = ({className, onClick, buttonType, buttonSize, children}) => {
   const handleClick = (e) => {
     e.stopPropagation()
 
@@ -11,7 +22,9 @@ const Button = ({className, onClick, children}) => {
   }
 
   return (
-    <button className={`button ${className}`} onClick={handleClick}>
+    <button 
+      className={`button ${className} ${buttonType} ${buttonSize}`} 
+      onClick={handleClick}>
       {children}
     </button>
   )
@@ -19,11 +32,15 @@ const Button = ({className, onClick, children}) => {
 
 Button.propTypes = {
   className: PropTypes.string,
+  buttonType: PropTypes.oneOf(Object.values(BUTTON_TYPES)),
+  buttonSize: PropTypes.oneOf(Object.values(BUTTON_SIZES)),
   onClick: PropTypes.func.isRequired
 }
 
 Button.defaultProps = {
-  className: ''
+  className: '',
+  buttonType: BUTTON_TYPES.primary,
+  buttonSize: BUTTON_SIZES.medium
 }
 
 export default Button

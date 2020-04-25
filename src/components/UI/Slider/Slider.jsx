@@ -4,10 +4,6 @@ import ReactSlider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import './style.css.scss'
 
-const DEFAULT_VALUE = 10
-const DEFAULT_MIN_VALUE = 3
-const DEFAULT_MAX_VALUE = 300
-
 const railStyle = {
   backgroundColor: '#dfd7ad',
   height: '8px'
@@ -65,12 +61,6 @@ Slider.propTypes = {
   maxValue: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.number
-}
-
-Slider.defaultProps = {
-  minValue: DEFAULT_MIN_VALUE,
-  maxValue: DEFAULT_MAX_VALUE,
-  value: DEFAULT_VALUE
 }
 
 export default Slider

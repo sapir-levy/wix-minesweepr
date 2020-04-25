@@ -3,6 +3,8 @@ import List from '../../UI/List/List'
 import SkillButton from './SkillButton/SkillButton'
 import CustomSetup from './CustomSetup/CustomSetup'
 
+import './style.css.scss'
+
 const SETUP_TYPES = {
   skill: "skill",
   custom: "custom"
@@ -50,22 +52,27 @@ const Setup = (props) => {
   const [showCustomSetupDialog, setShowCustomSetupDialog] = useState(false)
   
   const handleCustomSetup = () => setShowCustomSetupDialog(true)
+  const handleCloseCustomSetup = () => setShowCustomSetupDialog(false)
 
   const handleClick = (type) => {
     return type == SETUP_TYPES.skill ? props.onApplySetup : handleCustomSetup
   }
 
   return (
-    <div>
-      <List 
-        listItems={SETUP_CONFIG}
-        renderItem={(skill) => (
-          <SkillButton 
-            skill={skill}
-            onClick={handleClick(skill.type)} />
-        )} />
-      { true && (
-          <CustomSetup onApply={props.onApplySetup} />
+    <div className="setup-wrapper">
+      { !showCustomSetupDialog && (
+          <List 
+            listItems={SETUP_CONFIG}
+            renderItem={(skill) => (
+              <SkillButton 
+                skill={skill}
+                onClick={handleClick(skill.type)} />
+            )} />
+      )}
+      { showCustomSetupDialog && (
+          <CustomSetup 
+            onApply={props.onApplySetup}
+            onClose={handleCloseCustomSetup} />
       )}
     </div>
   )
