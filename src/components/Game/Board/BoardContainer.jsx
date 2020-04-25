@@ -26,7 +26,15 @@ const CELL = {
   status: CellStatus.Unknown
 }
 
-const BoardContainer = ({width, height, minesCount}) => {
+const BoardContainer = ({
+  width, 
+  height, 
+  minesCount, 
+  onWin, 
+  onLose,
+  onSupermanClick,
+  supermanMode
+}) => {
   const [field, setField] = useState([])
   const [mines, setMines] = useState({})
   const [minesLeft, setMinesLeft] = useState(minesCount)
@@ -40,7 +48,7 @@ const BoardContainer = ({width, height, minesCount}) => {
 
   useEffect(() => {
     if(checkVictory()) {
-      alert("you win!")
+      onWin()
     }
   }, [minesLeft, flagsLeft, cellsLeft])
 
@@ -181,7 +189,7 @@ const BoardContainer = ({width, height, minesCount}) => {
       return revealed
     }
     else if(cell.value === MINE) {
-      alert("you are a loser!")
+      onLose()
     }
     else {
       f[cellX][cellY].status = CellStatus.Revealed
@@ -205,14 +213,20 @@ const BoardContainer = ({width, height, minesCount}) => {
       mineField={field}
       flagsLeft={flagsLeft}
       onFlag={handleFlagClick}
-      onReveal={handleRevealClick} />
+      onReveal={handleRevealClick}
+      onSupermanClick={onSupermanClick}
+      supermanMode={supermanMode} />
   )
 }
 
 BoardContainer.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired, 
-  minesCount: PropTypes.number.isRequired
+  minesCount: PropTypes.number.isRequired,
+  onWin: PropTypes.func.isRequired,
+  onLose: PropTypes.func.isRequired,
+  onSupermanClick: PropTypes.func.isRequired,
+  supermanMode: PropTypes.bool.isRequired
 }
 
 export default BoardContainer

@@ -17,6 +17,7 @@ const GAME_STATUS = {
 const Game = (props) => {
   const [config, setConfig] = useState({})
   const [gameStatus, setGameStatus] = useState(GAME_STATUS.setup)
+  const [supermanMode, setSupermanMode] = useState(false)
 
   const applySetup = ({width, height, mines}) => {
     setConfig({width, height, mines})
@@ -25,6 +26,9 @@ const Game = (props) => {
 
   const handleWin = () => setGameStatus(GAME_STATUS.won)
   const handleLose = () => setGameStatus(GAME_STATUS.lost)
+  const handleStartNewGame = () => setGameStatus(GAME_STATUS.started)
+  const handleCloseBanner = () => setGameStatus(GAME_STATUS.setup)
+  const handleSupermanClick = () => setSupermanMode(!supermanMode)
 
   return (
     <div className="minesweeper-game">
@@ -37,10 +41,16 @@ const Game = (props) => {
             height={config.height}
             minesCount={config.mines}
             onWin={handleWin}
-            onLose={handleLose} />
+            onLose={handleLose}
+            supermanMode={supermanMode}
+            onSupermanClick={handleSupermanClick} />
       )}
-      { gameStatus === GAME_STATUS.won && <WinBanner /> }
-      { gameStatus === GAME_STATUS.lost && <LoseBanner /> }
+      { gameStatus === GAME_STATUS.won && (
+          <WinBanner onNewGame={handleStartNewGame} onCancel={handleCloseBanner} /> 
+      )}
+      { gameStatus === GAME_STATUS.lost && (
+          <LoseBanner onNewGame={handleStartNewGame} onCancel={handleCloseBanner}/> 
+      )}
     </div>
   )
 }

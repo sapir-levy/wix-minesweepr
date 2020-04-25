@@ -1,0 +1,11 @@
+.flags-indicator {
+  color: #00c6c8;
+
+  &::before{
+    content: '⚑';
+    color: #c15840;
+    margin-right: 10px;
+    transform: rotateY(180deg);
+    display: inline-block;
+  }
+}

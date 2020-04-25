@@ -17,6 +17,13 @@
     color: #927b4c;
   }
 
+  &.transparent {
+    background-color: transparent;
+    color: #333;
+    box-shadow: none;
+    padding: 0;
+  }
+
   &.small {
     width: 150px;
     padding: 5px;
@@ -34,5 +41,10 @@
     width: 350px;
     padding: 16px;
     font-size: 60px;
+  }
+
+  &.unset {
+    width: unset;
+    padding: 0;
   }
 }

@@ -1,0 +1,17 @@
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 120px;
+  }
+
+  .buttons {
+    margin-top: 24px;
+
+    .button:first-child {
+      margin-right: 12px;
+    }
+  }
+}

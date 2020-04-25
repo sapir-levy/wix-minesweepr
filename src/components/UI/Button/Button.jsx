@@ -6,12 +6,14 @@ import './style.css.scss'
 export const BUTTON_TYPES = {
   primary: "primary",
   secondary: "secondary",
+  transparent: "transparent",
 }
 
 export const BUTTON_SIZES = {
   small: "small",
   medium: "medium",
   large: "large",
+  unset: "unset"
 }
 
 const Button = ({className, onClick, buttonType, buttonSize, children}) => {

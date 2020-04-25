@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Cell from './Cell/Cell'
 
-const Cells = ({cells, onFlag, onReveal}) => {
+const Cells = ({cells, onFlag, onReveal, supermanMode}) => {
   return cells.map((cellsRow, ri) => (
     <div className="row" key={ri}>
       {
@@ -11,7 +11,8 @@ const Cells = ({cells, onFlag, onReveal}) => {
             key={[ri,ci]} 
             cell={cell} 
             onFlag={() => onFlag(ri, ci)}
-            onReveal={() => onReveal(ri, ci)} />
+            onReveal={() => onReveal(ri, ci)}
+            supermanMode={supermanMode} />
         ))
       }
     </div>
@@ -28,7 +29,8 @@ Cells.propTypes = {
     )
   ),
   onFlag: PropTypes.func.isRequired,
-  onReveal: PropTypes.func.isRequired
+  onReveal: PropTypes.func.isRequired,
+  supermanMode: PropTypes.bool.isRequired
 }
 
 export default Cells

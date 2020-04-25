@@ -9,52 +9,20 @@
   border: 4px solid #fcd10d;
   border-radius: 50px;
 
-  .flags-indicator {
-    flex-basis: 100%;
+  .board-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    
+    .flags-indicator {
+      display: inline-block;
+    }
   }
 
   .row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
-    .cell {
-      flex: 1 1 0;
-      width: 20px;
-      height: 20px;
-      margin: 0 0 0.5rem 0;      
-      padding: 10px;
-      box-sizing: border-box;
-      margin-right: 2px;
-      margin-bottom: 2px;
-      background-color: #fcedb6;
-      border-radius: 6px;
-      font-weight: 700;
-
-      &.unknown, &.flagged {
-        .cell-value {
-          visibility: hidden;
-        }
-      }
-
-      &.revealed {
-        background-color: #ebbe7b;
-
-        .cell-value.empty {
-          visibility: hidden;
-        }
-      }
-
-      &.flagged {
-        background-color: #ebbd7b;
-
-        .cell-value { visibility: hidden; }
-
-        &::after {
-          content: '⚑';
-          color: #c15840;
-        }
-      }
-    }
   }
 }

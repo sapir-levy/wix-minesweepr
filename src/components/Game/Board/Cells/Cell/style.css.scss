@@ -1,0 +1,92 @@
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  margin: 0 0 0.5rem 0;      
+  padding: 10px;
+  box-sizing: border-box;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  background-color: #fcedb6;
+  border-radius: 6px;
+  font-weight: 700;
+
+  .cell-value {
+    cursor: default;
+  }
+
+
+  &.unknown, &.flagged {
+    .cell-value {
+      visibility: hidden;
+    }
+  }
+
+  &.revealed {
+    background-color: #ebbe7b;
+
+    &.empty {
+      .cell-value {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &.mine {
+    &.superman-enabled {
+      background-color: #fd583f;
+      &::after {
+        content: '💣' !important;
+        font-size: 12px;
+      }
+      
+      &.flagged {
+        background-color: #bcd319;
+      }
+    }
+
+
+    &.superman-enabled, &.flagged {
+       &::after {
+        visibility: visible;
+      }
+    }
+
+    .cell-value { display: none; }
+
+    &::after {
+      visibility: hidden;
+      content: '💣';
+      font-size: 12px;
+
+    }
+  }
+
+  &.flagged {
+    background-color: #ebbd7b;
+
+    .cell-value { display: none; }
+    
+    &.superman-enabled {
+      &:not(.mine) {
+        .cell-value { display: block; }
+        &::after { display: none; }
+      }
+    }
+
+    &::after {
+      content: '⚑';
+      color: #c15840;
+      font-size: 16px;
+    }
+  }
+
+  &.superman-enabled {
+    .cell-value {
+      visibility: visible !important;
+    }
+  }
+}
