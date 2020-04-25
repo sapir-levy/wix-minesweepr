@@ -1,6 +1,8 @@
 import React from 'react'
-import Board from './Board'
-import GameSetup from './Setup'
+import GameBoard from './Board/BoardContainer'
+import GameSetup from './Setup/Setup'
+
+import './style.css.scss'
 
 class Game extends React.Component {
   constructor(props) {
@@ -25,7 +27,7 @@ class Game extends React.Component {
     return (
       <div>
         <GameSetup onApplySetup={this.applySetup} />
-        <Board 
+        <GameBoard 
           width={this.state.width}
           height={this.state.height}
           minesCount={this.state.mines} />

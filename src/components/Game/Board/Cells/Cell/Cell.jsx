@@ -1,7 +1,5 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-
-import './style.css.scss'
 
 const Cell = ({cell, onFlag, onReveal}) => {
   const handleRightClick = (e) => {
@@ -26,7 +24,12 @@ const Cell = ({cell, onFlag, onReveal}) => {
 }
 
 Cell.propTypes = {
-  
+  cell: PropTypes.shape({
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    status: PropTypes.string
+  }),
+  onFlag: PropTypes.func.isRequired,
+  onReveal: PropTypes.func.isRequired
 }
 
 

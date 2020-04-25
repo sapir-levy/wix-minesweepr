@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 
 const SETUP_CONFIG = [
   {
@@ -35,15 +34,15 @@ const Setup = (props) => {
   return (
     <div>
       {
-        SETUP_CONFIG.map(setup => {
+        SETUP_CONFIG.map((setup, index) => {
           const handleSetupClick = () => {
             setWidth(setup.width)
             setHeight(setup.height)
             setMines(setup.mines)
-            
+
           }
 
-          return <div onClick={handleSetupClick}>{setup.label}</div>
+          return <div key={index} onClick={handleSetupClick}>{setup.label}</div>
 
         }) 
       }

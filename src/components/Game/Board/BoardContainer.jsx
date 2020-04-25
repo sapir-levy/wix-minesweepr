@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import BoardRow from './Row'
+import PropTypes from 'prop-types'
+import Board from './Board'
 import cloneDeep from 'lodash/cloneDeep'
 
 const NEIGHBORS = Object.freeze([
@@ -9,7 +10,7 @@ const NEIGHBORS = Object.freeze([
 ])
 
 const MINE = '*'
-const EMPTY_CELL = 0
+
 const CellStatus = {
   Unknown: 'unknown',
   Revealed: 'revealed',
@@ -17,25 +18,24 @@ const CellStatus = {
   Exploded: 'exploaded'
 }
 
+const EMPTY_CELL = 0
+
 const CELL = {
   value: EMPTY_CELL,
   status: CellStatus.Unknown
 }
 
-const Board = ({width, height, minesCount}) => {
+const BoardContainer = ({width, height, minesCount}) => {
   const [field, setField] = useState([])
   const [mines, setMines] = useState({})
   const [minesLeft, setMinesLeft] = useState(minesCount)
   const [flagsLeft, setFlagsLeft] = useState(minesCount)
   const [cellsLeft, setCellsLeft] = useState((height * width) - minesCount)
 
-  useEffect(() => {
-    generateMines()
-  }, [width, height, minesCount])
 
-  useEffect(() => {
-    setMineField()
-  }, [mines])
+  useEffect(() => {generateMines()}, [width, height, minesCount])
+
+  useEffect(() => {setMineField()}, [mines])
 
   useEffect(() => {
     if(checkVictory()) {
@@ -43,9 +43,7 @@ const Board = ({width, height, minesCount}) => {
     }
   }, [minesLeft, flagsLeft, cellsLeft])
 
-  const checkVictory = () => {
-    return minesLeft == 0 && cellsLeft == 0
-  }
+  const checkVictory = () => minesLeft === 0 && cellsLeft === 0
 
   const generateMines = () => {
     const m = {}
@@ -89,7 +87,7 @@ const Board = ({width, height, minesCount}) => {
 
       for(let i = 0; i < neighbors.length; i++) {
         const [nx, ny] = neighbors[i]
-        if(f[nx][ny].value != MINE) {
+        if(f[nx][ny].value !== MINE) {
           f[nx][ny].value++
         }
       }
@@ -124,7 +122,7 @@ const Board = ({width, height, minesCount}) => {
         newStatus = CellStatus.Flagged
         setFlagsLeft(flagsLeft - 1)
 
-        if(cell.value == MINE) {
+        if(cell.value === MINE) {
           setMinesLeft(minesLeft - 1)
         }
 
@@ -150,7 +148,7 @@ const Board = ({width, height, minesCount}) => {
       const [nx, ny] = neighbors[i]
       const neighbor = f[nx][ny]
 
-      if(neighbor.value == MINE && neighbor.status != CellStatus.Flagged) {
+      if(neighbor.value === MINE && neighbor.status !== CellStatus.Flagged) {
         hasMine = true
         break
       }
@@ -161,7 +159,7 @@ const Board = ({width, height, minesCount}) => {
         const [nx, ny] = neighbors[i]
         const neighbor = f[nx][ny]
 
-        if(neighbor.status != CellStatus.Revealed) {
+        if(neighbor.status !== CellStatus.Revealed) {
           revealed += revealCell(f, nx, ny)
         }
       }
@@ -173,10 +171,10 @@ const Board = ({width, height, minesCount}) => {
   const revealCell = (f, cellX, cellY) => {
     const cell = f[cellX][cellY]
     let revealed = 0
-    if(cell.status == CellStatus.Revealed || cell.status == CellStatus.Flagged) {
+    if(cell.status === CellStatus.Revealed || cell.status === CellStatus.Flagged) {
       return revealed
     }
-    else if(cell.value == MINE) {
+    else if(cell.value === MINE) {
       alert("you are a loser!")
     }
     else {
@@ -188,7 +186,7 @@ const Board = ({width, height, minesCount}) => {
     return revealed
   }
 
-  const handleReveal = (cellX, cellY) => {
+  const handleRevealClick = (cellX, cellY) => {
     const f = cloneDeep(field)
     const revealed = revealCell(f, cellX, cellY)
 
@@ -197,22 +195,18 @@ const Board = ({width, height, minesCount}) => {
   }
 
   return (
-    <div className="board">
-      {field.map((row, ri) => {
-        return (
-          <BoardRow 
-            key={ri} 
-            cells={row}
-            onFlag={(ci) => handleFlagClick(ri, ci)}
-            onReveal={(ci) => handleReveal(ri, ci)} />
-        )
-      })}
-    </div>
+    <Board 
+      mineField={field}
+      flagsLeft={flagsLeft}
+      onFlag={handleFlagClick}
+      onReveal={handleRevealClick} />
   )
 }
 
-Board.propTypes = {
-  
+BoardContainer.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired, 
+  minesCount: PropTypes.number.isRequired
 }
 
-export default Board
+export default BoardContainer
