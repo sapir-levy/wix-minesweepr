@@ -1,9 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-##Wix Minesweeper Assignement
+## Wix Minesweeper Assignement
   ReactJS minesweepwer game.
 
-###Game Rules
+### Game Rules
   1.Board should be of configurable width, height and mines number.
   2.  The board should support width and height of up to 300 (300x300 cells),
   3.  Should display an indication of the number of remaining flags above the board.
