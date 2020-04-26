@@ -5,7 +5,7 @@ import
   Button, {BUTTON_TYPES, BUTTON_SIZES} 
 from '../../../UI/Button/Button'
 
-const DEFAULT_MIN_VALUE = 3
+const DEFAULT_MIN_VALUE = 5
 const DEFAULT_MAX_VALUE = 300
 const DIMENSIONS_DEFAULT_VALUE = 150
 const MINES_DEFAULT_VALUE = Math.pow(DIMENSIONS_DEFAULT_VALUE, 2) / 2

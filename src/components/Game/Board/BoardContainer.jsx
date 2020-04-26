@@ -26,6 +26,8 @@ const CELL = {
   status: CellStatus.Unknown
 }
 
+const WARNING_TIMEOUT = 5000
+
 const BoardContainer = ({
   width, 
   height, 
@@ -40,11 +42,17 @@ const BoardContainer = ({
   const [minesLeft, setMinesLeft] = useState(minesCount)
   const [flagsLeft, setFlagsLeft] = useState(minesCount)
   const [cellsLeft, setCellsLeft] = useState((height * width) - minesCount)
+  const [showFlagsWarning, setShowFlagsWarning] = useState(false)
 
 
   useEffect(() => {generateMines()}, [width, height, minesCount])
-
   useEffect(() => {setMineField()}, [mines])
+  useEffect(() => {
+    if(showFlagsWarning) {
+      const tId = setTimeout(hideFlagsWarning, WARNING_TIMEOUT)
+      return () => clearTimeout(tId)
+    }
+  }, [showFlagsWarning])
 
   useEffect(() => {
     if(checkVictory()) {
@@ -53,6 +61,7 @@ const BoardContainer = ({
   }, [minesLeft, flagsLeft, cellsLeft])
 
   const checkVictory = () => minesLeft === 0 && cellsLeft === 0
+  const hideFlagsWarning = () => setShowFlagsWarning(false)
 
   const generateMines = () => {
     const m = {}
@@ -129,6 +138,11 @@ const BoardContainer = ({
 
 
   const handleFlagClick = (cellX, cellY) => {
+    if(flagsLeft == 0) {
+      setShowFlagsWarning(true)
+      return
+    }
+
     const f = cloneDeep(field)
     const cell = field[cellX][cellY]
     let newStatus
@@ -212,6 +226,7 @@ const BoardContainer = ({
     <Board 
       mineField={field}
       flagsLeft={flagsLeft}
+      showFlagsWarning={showFlagsWarning}
       onFlag={handleFlagClick}
       onReveal={handleRevealClick}
       onSupermanClick={onSupermanClick}

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import BoardCells from './Cells/Cells'
+import BoardGrid from './Grid/Grid'
 import FlagsIndicator from './FlagsIndicator/FlagsIndicator'
 import SupermanButton from './SupermanButton/SupermanButton'
 
@@ -10,10 +10,12 @@ const Board = (props) => {
   return (
     <div className="board">
       <div className="board-header">
-        <FlagsIndicator flagsLeft={props.flagsLeft} />
+        <FlagsIndicator 
+          flagsLeft={props.flagsLeft} 
+          showFlagsWarning={props.showFlagsWarning} />
         <SupermanButton onSupermanClick={props.onSupermanClick} />
       </div>
-      <BoardCells 
+      <BoardGrid 
         cells={props.mineField}
         onFlag={props.onFlag}
         onReveal={props.onReveal}
@@ -32,6 +34,7 @@ Board.propTypes = {
     )
   ),
   flagsLeft: PropTypes.number.isRequired,
+  showFlagsWarning: PropTypes.bool,
   onFlag: PropTypes.func.isRequired,
   onReveal: PropTypes.func.isRequired,
   onSupermanClick: PropTypes.func.isRequired,
